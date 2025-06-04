@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>线性回归 | LinHao's Pages</title><meta name="author" content="LinHao"><meta name="copyright" content="LinHao"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="线性回归算法思想线性回归简介 定义：线性回归是一种利用回归方程对一个或多个自变量和目标值之间的关系进行拟合的建模分析方式 应用场景：预测连续值 任务目标：任务: 从样本中学习特征（如身高）和目标（如体重）之间的关系，利用这个关系预测新数据的目标值  线性回归数学表示一元线性回归  定义：目标值只与一个因变量有关系 公式：$y &#x3D; kx + b$，其中﻿k﻿是斜率，表示特征值和标签值之间的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性回归">
+<meta property="og:url" content="http://example.com/2025/04/30/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/index.html">
+<meta property="og:site_name" content="LinHao&#39;s Pages">
+<meta property="og:description" content="线性回归算法思想线性回归简介 定义：线性回归是一种利用回归方程对一个或多个自变量和目标值之间的关系进行拟合的建模分析方式 应用场景：预测连续值 任务目标：任务: 从样本中学习特征（如身高）和目标（如体重）之间的关系，利用这个关系预测新数据的目标值  线性回归数学表示一元线性回归  定义：目标值只与一个因变量有关系 公式：$y &#x3D; kx + b$，其中﻿k﻿是斜率，表示特征值和标签值之间的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cover/3.jpg">
+<meta property="article:published_time" content="2025-04-30T11:18:09.053Z">
+<meta property="article:modified_time" content="2025-05-15T09:42:22.662Z">
+<meta property="article:author" content="LinHao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/cover/3.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "线性回归",
+  "url": "http://example.com/2025/04/30/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/",
+  "image": "http://example.com/img/cover/3.jpg",
+  "datePublished": "2025-04-30T11:18:09.053Z",
+  "dateModified": "2025-05-15T09:42:22.662Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LinHao",
+      "url": "http://example.com/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/04/30/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '线性回归',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/wallpaper/1.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar/3.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/share/"><i class="fa-fw fa fa-address-book"></i><span> 分享</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fa fa-solid fa-image"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li><li><a class="site-page child" href="/game/"><i class="fa-fw fa fa-gamepad"></i><span> 游戏</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">LinHao's Pages</span></a><a class="nav-page-title" href="/"><span class="site-name">线性回归</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/share/"><i class="fa-fw fa fa-address-book"></i><span> 分享</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fa fa-solid fa-image"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li><li><a class="site-page child" href="/game/"><i class="fa-fw fa fa-gamepad"></i><span> 游戏</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">线性回归</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-30T11:18:09.053Z" title="发表于 2025-04-30 19:18:09">2025-04-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-05-15T09:42:22.662Z" title="更新于 2025-05-15 17:42:22">2025-05-15</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="container post-content" id="article-container"><h1 id="线性回归算法思想"><a href="#线性回归算法思想" class="headerlink" title="线性回归算法思想"></a>线性回归算法思想</h1><h2 id="线性回归简介"><a href="#线性回归简介" class="headerlink" title="线性回归简介"></a>线性回归简介</h2><ul>
+<li><strong>定义</strong>：线性回归是一种利用回归方程对一个或多个自变量和目标值之间的关系进行拟合的建模分析方式</li>
+<li><strong>应用场景</strong>：预测连续值</li>
+<li><strong>任务目标</strong>：任务: 从样本中学习特征（如身高）和目标（如体重）之间的关系，利用这个关系预测新数据的目标值</li>
+</ul>
+<h2 id="线性回归数学表示"><a href="#线性回归数学表示" class="headerlink" title="线性回归数学表示"></a>线性回归数学表示</h2><h3 id="一元线性回归"><a href="#一元线性回归" class="headerlink" title="一元线性回归"></a>一元线性回归</h3><p><img src="https://bkimg.cdn.bcebos.com/pic/83025aafa40f4bfbab333c2a084f78f0f63618e8" alt="一元线性回归"></p>
+<ul>
+<li><strong>定义</strong>：目标值只与一个因变量有关系</li>
+<li><strong>公式</strong>：$y &#x3D; kx + b$，其中﻿k﻿是斜率，表示特征值和标签值之间的线性关系；﻿b是截距；x为特征值；y为目标值，至少有两个样本</li>
+<li><strong>目标</strong>：找到一条直线，使得<strong>这条直线与所有样本点的误差最小</strong></li>
+<li><strong>方法</strong>：利用所有样本点的特征值和目标值，通过求解线性方程组来找到最佳直线</li>
+</ul>
+<h3 id="多元线性回归"><a href="#多元线性回归" class="headerlink" title="多元线性回归"></a>多元线性回归</h3><ul>
+<li><strong>定义</strong>: 当目标值与<strong>多个自变量有关</strong>时，使用的线性回归称为多元线性回归</li>
+<li><strong>公式</strong>：$Y&#x3D;w_1x_1+w_2x_2+w_3x_3+…+b$，其中是$w_i$各个自变量的权重，表示该自变量对目标值的影响程度；b是截距</li>
+<li><strong>矩阵表示</strong>：$Y&#x3D;W^TX$，其中w是权重向量，x是特征向量，w实例：$(b, w_1, w_2,…)^T$，x实例：$(1, x_1, x_2, …)^T$</li>
+</ul>
+<h3 id="权重影响"><a href="#权重影响" class="headerlink" title="权重影响"></a>权重影响</h3><ul>
+<li><strong>权重值w</strong>：权重值越大，说明对应的特征对目标值的影响越大；权重值越小，影响越小</li>
+<li><strong>特征选择</strong>：在进行特征选择时，可以根据权重值的大小来选择对目标值影响较大的特征(数据降维)</li>
+<li><strong>求解目标</strong>：线性回归的求解目标是找到最佳的权重向量﻿W﻿，使得预测值与实际值之间的误差最小<blockquote>
+<p>[!note] 线性回归<br>线性回归假设因变量和自变量之间存在线性关系，即使有像抛物线、指数、对数等非线性关系</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="线性回归问题求解"><a href="#线性回归问题求解" class="headerlink" title="线性回归问题求解"></a>线性回归问题求解</h1><h2 id="线性回归API"><a href="#线性回归API" class="headerlink" title="线性回归API"></a>线性回归API</h2><ul>
+<li>来自<code>sklearn</code>的API：<code>sklearn.linear_model.LinearRegression</code></li>
+<li>使用<code>model.coef_</code>和<code>model.intercept_</code>获取到模型的权重w和偏置b</li>
+<li>实例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"></span><br><span class="line"><span class="comment"># step 1:准备数据 (身高和体重关系)</span></span><br><span class="line">x = [[<span class="number">160</span>], [<span class="number">166</span>], [<span class="number">172</span>], [<span class="number">174</span>], [<span class="number">180</span>]]</span><br><span class="line">y = [<span class="number">56.3</span>, <span class="number">60.6</span>, <span class="number">65.1</span>, <span class="number">68.5</span>, <span class="number">75</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># step 2: **实例化模型**</span></span><br><span class="line">model = LinearRegression()</span><br><span class="line"></span><br><span class="line"><span class="comment"># step 3: 模型训练</span></span><br><span class="line">model.fit(x, y)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;模型权重(weight)：&quot;</span>, model.coef_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;模型偏置(bias)：&quot;</span>, model.intercept_)</span><br><span class="line"></span><br><span class="line"><span class="comment"># step 4: 模型预测</span></span><br><span class="line"><span class="built_in">print</span>(model.predict([[<span class="number">176</span>]]))</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><h3 id="损失函数概念"><a href="#损失函数概念" class="headerlink" title="损失函数概念"></a>损失函数概念</h3><ul>
+<li><strong>误差概念</strong>：$L &#x3D; y_{hat} - y$，其中y表示真实值，$y_{hat}$表示预测值，最好的拟合使得所有点的误差最小</li>
+<li><strong>损失函数定义</strong>：衡量<strong>每个样本预测值与真实值差异的函数</strong>，又称代价函数，成本函数，目标函数，必须包含训练集中每个样本的误差，而非部分样本，最优拟合线就是使损失函数值最小的直线</li>
+<li><strong>优化方法</strong>：<ul>
+<li>正规方程法：解析解法，直接求得闭式解，适用于小规模数据</li>
+<li>梯度下降法：迭代逼近最优解的数值方法，适用于大规模数据</li>
+</ul>
+</li>
+<li><strong>求解方法</strong>：采用最小二乘法为例<ul>
+<li>列出损失函数： $L(k, b) &#x3D; \sum (kx_i + b - y_i)^2$其中$x_i, y_i$均为真实值</li>
+<li>先固定b计算k，变为一元二次方程，设b为0，计算出损失函数最小的k，再求出b的值</li>
+<li>不建议使用最小二乘法原因：随着样本数量增多，误差会增大</li>
+</ul>
+</li>
+</ul>
+<h3 id="回归问题中损失函数"><a href="#回归问题中损失函数" class="headerlink" title="回归问题中损失函数"></a>回归问题中损失函数</h3><h4 id="最小二乘法-Least-Square-method"><a href="#最小二乘法-Least-Square-method" class="headerlink" title="最小二乘法(Least Square method)"></a>最小二乘法(Least Square method)</h4><ul>
+<li><strong>公式</strong>：预测值与真实值之差的平方和，即$$L(k, b) &#x3D; \sum (kx_i + b - y_i)^2$$</li>
+<li><strong>特点</strong>：随着样本数量增多，误差会增大</li>
+</ul>
+<h4 id="均方误差-Mean-Square-Error-MSE"><a href="#均方误差-Mean-Square-Error-MSE" class="headerlink" title="均方误差(Mean-Square Error, MSE)"></a>均方误差(Mean-Square Error, MSE)</h4><ul>
+<li><strong>公式</strong>：预测值与真实值之差的平方和的平均值，即﻿$$L(w, b) &#x3D; \sum_{i &#x3D; 1}^{n} \frac{1}{n} (y_i - \hat{y_i})^2$$，其中﻿n为样本个数，﻿$y_i$为真实值，$\hat{y_i}$﻿为预测值。</li>
+<li><strong>特点</strong>：对异常值（离群点）较为敏感，因为平方会放大差异</li>
+</ul>
+<h4 id="平均绝对误差-Mean-Absolute-Error-MAE"><a href="#平均绝对误差-Mean-Absolute-Error-MAE" class="headerlink" title="平均绝对误差(Mean Absolute Error, MAE)"></a>平均绝对误差(Mean Absolute Error, MAE)</h4><ul>
+<li><strong>公式</strong>：预测值与真实值之差的绝对值的平均值，即$$L(w, b) &#x3D; \sum_{i &#x3D; 1}^{n} \frac{1}{n} |y_i - \hat{y}|$$，注意此方法不方便求导</li>
+<li><strong>特点</strong>：对异常值不那么敏感，因为只考虑绝对差异，但是不方便求导</li>
+</ul>
+<h4 id="均方根误差-Root-Mean-Square-Error-RMSE"><a href="#均方根误差-Root-Mean-Square-Error-RMSE" class="headerlink" title="均方根误差(Root Mean Square Error, RMSE)"></a>均方根误差(Root Mean Square Error, RMSE)</h4><ul>
+<li><strong>公式</strong>：预测值与真实值之差的平方和的平均值开方，即﻿$$L(w, b) &#x3D; \sqrt{\sum_{i &#x3D; 1}^{n} \frac{1}{n} (y_i - \hat{y_i})^2}$$</li>
+</ul>
+<h2 id="优化方法"><a href="#优化方法" class="headerlink" title="优化方法"></a>优化方法</h2><h3 id="正规方程法"><a href="#正规方程法" class="headerlink" title="正规方程法"></a>正规方程法</h3><h4 id="一元线性回归-1"><a href="#一元线性回归-1" class="headerlink" title="一元线性回归"></a>一元线性回归</h4><p>假设：损失函数为$L(k, b) &#x3D; \sum (kx^{(i)} + b - y^{(i)})^2$<br>损失函数是关于k，b的二元函数，对k，b求偏导并使使其为0<br>$$\frac{\partial L(k, b)}{\partial k} &#x3D; \sum (2kx_i + 2bx_i - 2x_iy_i) &#x3D; 0$$<br>$$\frac{\partial L(k, b)}{\partial b} &#x3D; \sum (2kx_i + 2b - 2y_i) &#x3D; 0$$</p>
+<p>求得最优解k，b</p>
+<h4 id="多元线性回归-1"><a href="#多元线性回归-1" class="headerlink" title="多元线性回归"></a>多元线性回归</h4><p>假设：损失函数为$L(w_i, b) &#x3D; \sum (w_ix_i + b - y_i)^2$</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">LinHao</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/04/30/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/">http://example.com/2025/04/30/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">LinHao's Pages</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/cover/3.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/04/19/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%AE%97%E6%B3%95/KNN%E7%AE%97%E6%B3%95/" title="KNN算法"><img class="cover" src="/img/cover/2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">KNN算法</div></div><div class="info-2"><div class="info-item-1">KNN算法思想KNN简介 定义: K-近邻算法（K-Nearest Neighbor, 简称KNN）是一种基于实例的学习，通过测量不同特征值之间的距离进行分类或回归 核心思想: 如果一个样本在特征空间中的k个最相似的样本中的大多数属于某一个类别，则该样本也属于这个类别，其中K为超参数  样本相似性 衡量标准: 样本距离越近则越相似，通常使用欧氏距离来衡量 欧氏距离公式：n维空间点A($x_1, x_2, … x_n$)到B($y_1, y_2,… y_n$)之间的距离公式为$d_{AB} &#x3D; \sqrt{\sum_{i&#x3D;1}^{n}(x_i - y_i)^2}$  KNN算法流程解决分类任务 STEP 1：计算未知样本与训练集中所有样本的距离 STEP 2：按照距离的递增关系进行排序 STEP 3：选取与未知样本距离最小的k个样本 STEP 4：统计前k个样本所在类别出现的频率 STEP 5：返回前k个样本中出现频率最高的类别作为未知样本的预测分类  解决回归任务 STEP 1：计算未知样本与训练集中所有样本的距离 STEP...</div></div></div></a><a class="pagination-related" href="/2025/05/15/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%A0%94%E7%A9%B6/UNet%E7%BD%91%E7%BB%9C%E5%8F%8A%E5%85%B6%E5%AE%B6%E6%97%8F/" title="UNet网络及其家族"><img class="cover" src="/img/cover/1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">UNet网络及其家族</div></div><div class="info-2"><div class="info-item-1">UNet算法思想UNet简介 论文来自：[1505.04597] U-Net: Convolutional Networks for Biomedical Image Segmentation 特点： 高效利用数据增强：使用弹性形变(elastic deformations)扩充数据集，少量数据图像便可训练 提供新型网络结构：使用收缩路径(contracting path)捕获信息和对称扩展路径(symmetric expanding path)精确定位，跳跃连接（Skip Connections）将两者结合的全卷积神经网络 提供新型训练策略：使用重叠瓦片策略(Overlap-tile...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar/3.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LinHao</div><div class="author-info-description">ヾ (・ω・`) o muuua~</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LinHao100076"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/LinHao100076" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:LinHao100076@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">System.out.print("有些梦虽然遥不可及，但并不是不可能实现!")</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3"><span class="toc-number">1.</span> <span class="toc-text">线性回归算法思想</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">线性回归简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%95%B0%E5%AD%A6%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.2.</span> <span class="toc-text">线性回归数学表示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="toc-number">1.2.1.</span> <span class="toc-text">一元线性回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="toc-number">1.2.2.</span> <span class="toc-text">多元线性回归</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%83%E9%87%8D%E5%BD%B1%E5%93%8D"><span class="toc-number">1.2.3.</span> <span class="toc-text">权重影响</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98%E6%B1%82%E8%A7%A3"><span class="toc-number">2.</span> <span class="toc-text">线性回归问题求解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92API"><span class="toc-number">2.1.</span> <span class="toc-text">线性回归API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">2.2.</span> <span class="toc-text">损失函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E6%A6%82%E5%BF%B5"><span class="toc-number">2.2.1.</span> <span class="toc-text">损失函数概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98%E4%B8%AD%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">2.2.2.</span> <span class="toc-text">回归问题中损失函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95-Least-Square-method"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">最小二乘法(Least Square method)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9D%87%E6%96%B9%E8%AF%AF%E5%B7%AE-Mean-Square-Error-MSE"><span class="toc-number">2.2.2.2.</span> <span class="toc-text">均方误差(Mean-Square Error, MSE)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B3%E5%9D%87%E7%BB%9D%E5%AF%B9%E8%AF%AF%E5%B7%AE-Mean-Absolute-Error-MAE"><span class="toc-number">2.2.2.3.</span> <span class="toc-text">平均绝对误差(Mean Absolute Error, MAE)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9D%87%E6%96%B9%E6%A0%B9%E8%AF%AF%E5%B7%AE-Root-Mean-Square-Error-RMSE"><span class="toc-number">2.2.2.4.</span> <span class="toc-text">均方根误差(Root Mean Square Error, RMSE)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">优化方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B%E6%B3%95"><span class="toc-number">2.3.1.</span> <span class="toc-text">正规方程法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-1"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">一元线性回归</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92-1"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">多元线性回归</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/05/31/Linux%20%E8%BF%90%E7%BB%B4/%E7%BA%A2%E5%B8%BDRHCE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D/" title="计算机功能介绍"><img src="/img/cover/3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="计算机功能介绍"/></a><div class="content"><a class="title" href="/2025/05/31/Linux%20%E8%BF%90%E7%BB%B4/%E7%BA%A2%E5%B8%BDRHCE/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D/" title="计算机功能介绍">计算机功能介绍</a><time datetime="2025-05-31T13:22:24.858Z" title="发表于 2025-05-31 21:22:24">2025-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/23/%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/ADB%E6%97%A0%E7%BA%BF%E8%B0%83%E8%AF%95%E6%89%8B%E6%9C%BA/" title="ADB无线调试手机"><img src="/img/cover/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ADB无线调试手机"/></a><div class="content"><a class="title" href="/2025/05/23/%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B/ADB%E6%97%A0%E7%BA%BF%E8%B0%83%E8%AF%95%E6%89%8B%E6%9C%BA/" title="ADB无线调试手机">ADB无线调试手机</a><time datetime="2025-05-23T07:24:09.045Z" title="发表于 2025-05-23 15:24:09">2025-05-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/15/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%A0%94%E7%A9%B6/UNet%E7%BD%91%E7%BB%9C%E5%8F%8A%E5%85%B6%E5%AE%B6%E6%97%8F/" title="UNet网络及其家族"><img src="/img/cover/1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="UNet网络及其家族"/></a><div class="content"><a class="title" href="/2025/05/15/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%A0%94%E7%A9%B6/UNet%E7%BD%91%E7%BB%9C%E5%8F%8A%E5%85%B6%E5%AE%B6%E6%97%8F/" title="UNet网络及其家族">UNet网络及其家族</a><time datetime="2025-05-15T12:02:25.254Z" title="发表于 2025-05-15 20:02:25">2025-05-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/30/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" title="线性回归"><img src="/img/cover/3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线性回归"/></a><div class="content"><a class="title" href="/2025/04/30/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" title="线性回归">线性回归</a><time datetime="2025-04-30T11:18:09.053Z" title="发表于 2025-04-30 19:18:09">2025-04-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/04/19/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%AE%97%E6%B3%95/KNN%E7%AE%97%E6%B3%95/" title="KNN算法"><img src="/img/cover/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="KNN算法"/></a><div class="content"><a class="title" href="/2025/04/19/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E7%AE%97%E6%B3%95/KNN%E7%AE%97%E6%B3%95/" title="KNN算法">KNN算法</a><time datetime="2025-04-19T10:34:55.379Z" title="发表于 2025-04-19 18:34:55">2025-04-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By LinHao</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
